@@ -1,11 +1,4 @@
 <template>
-<<<<<<< Updated upstream
-  <div class="list">
-    <h1> {{ msg }}</h1>
-    <input type="text" class="list" placeholder="Task to add" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="todo in todos" :key="todo.id" class="todo-item">
-      {{todo.title}}
-=======
   <div class="todo">
     <input type="text" class="todo-input" placeholder="Task to add" v-model="newTodo" @keyup.enter="addTodo">
     <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
@@ -16,7 +9,6 @@
       <div class="remove-item" @click="removeTodo(index)">
         &times;
       </div>
->>>>>>> Stashed changes
     </div>
   </div>
 </template>
@@ -54,8 +46,6 @@ export default {
 
       this.newTodo = ''
       this.idForTodo++
-<<<<<<< Updated upstream
-=======
     },
     editTodo(todo){
         this.beforeEditCache = todo.title
@@ -73,7 +63,6 @@ export default {
     cancelEdit(todo){
       todo.title = this.beforeEditCache
       todo.editing = false
->>>>>>> Stashed changes
     }
   }
 }
@@ -93,8 +82,6 @@ export default {
     font-size: 18px;
     margin-bottom: 16px;
   }
-<<<<<<< Updated upstream
-=======
 
 .todo-item{
   margin-bottom: 12px;
@@ -132,5 +119,4 @@ export default {
   :focus{
     outline: none;
   }
->>>>>>> Stashed changes
 </style>
