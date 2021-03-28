@@ -1,7 +1,7 @@
 <template>
   <div class="todo">
     <input type="text" class="todo-input" placeholder="Task to add" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
+    <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
         <input type="checkbox" v-model=todo.completed>
         <div v-if="!todo.editing" @dblclick="editTodo(todo)" class="todo-item-label" :class="{ completed: todo.completed}">{{todo.title}}</div>
@@ -18,14 +18,14 @@
     </div>
 
     <div class="extra-container">
-      <div>
+      <div class="button-display">
         <button :class="{ active:filter == 'all'}" @click="filter = 'all'">All</button>
         <button :class="{ active:filter == 'active'}" @click="filter = 'active'">Active</button>
         <button :class="{ active:filter == 'completed'}" @click="filter = 'completed'">Completed</button>
       </div>
 
       <div>
-        
+        <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
       </div>
     </div>
   </div>
@@ -61,6 +61,21 @@ export default {
     },
     anyRemaining(){
       return this.remaining != 0
+    },
+    todosFiltered(){
+      if(this.filter == 'all'){
+        return this.todos
+      }
+      else if(this.filter == 'active'){
+        return this.todos.filter(todo => !todo.completed)
+      }
+      else if(this.filter == 'completed'){
+        return this.todos.filter(todo => todo.completed)
+      }
+      return this.todos
+    },
+    showClearCompletedButton(){
+      return this.todos.filter(todo => todo.completed).length>0
     }
   },
   directives: {
@@ -103,6 +118,9 @@ export default {
     }, 
     checkAllTodos(){
       this.todos.forEach((todo)=>todo.completed = event.target.checked)
+    },
+    clearCompleted(){
+      this.todos = this.todos.filter(todo => !todo.completed)
     }
   }
 }
@@ -113,7 +131,9 @@ export default {
 
 
 .todo{
-  margin-left: 75vh;
+  box-sizing: border-box;
+  width: 30%;
+  margin-left: 70vh;
   margin-right: 85vh;
 }
   .todo-input{
@@ -176,8 +196,11 @@ export default {
   }
 
   button{
+    margin-left: 10px;
+    border-radius: 15px;
+    border: 1px solid black;
     font-size: 12px;
-    background-color: white;
+    padding: 10px;
     appearance: none;
   }
 
@@ -186,6 +209,6 @@ export default {
   }
 
   .active{
-    background: lightgreen;
+    background: green;
   }
 </style>
