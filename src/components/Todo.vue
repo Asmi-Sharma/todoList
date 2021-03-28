@@ -16,6 +16,18 @@
       <div><label><input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos">Check All</label></div>
       <div>{{ remaining}}items left</div>
     </div>
+
+    <div class="extra-container">
+      <div>
+        <button :class="{ active:filter == 'all'}" @click="filter = 'all'">All</button>
+        <button :class="{ active:filter == 'active'}" @click="filter = 'active'">Active</button>
+        <button :class="{ active:filter == 'completed'}" @click="filter = 'completed'">Completed</button>
+      </div>
+
+      <div>
+        
+      </div>
+    </div>
   </div>
 </template>
 
@@ -26,6 +38,7 @@ export default {
       newTodo: '',
       ifForTodo: 3,
       beforeEditCache: '',
+      filter: 'all',
       todos: [
         {
           'id': 1,
@@ -166,10 +179,6 @@ export default {
     font-size: 12px;
     background-color: white;
     appearance: none;
-  }
-
-  :hover{
-    background-color: lightgreen;
   }
 
   :focus{
