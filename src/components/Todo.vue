@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       newTodo: "",
-      ifForTodo: 3,
+      idForTodo: 3,
       beforeEditCache: "",
       filter: "all",
       todos: [
@@ -178,7 +178,7 @@ export default {
 .todo {
   box-sizing: border-box;
   width: 30%;
-  margin-left: 70vh;
+  margin-left: 73vh;
   margin-right: 85vh;
 }
 .todo-input {
