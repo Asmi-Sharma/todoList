@@ -3,7 +3,7 @@
     <input type="text" class="todo-input" placeholder="Task to add" v-model="newTodo" @keyup.enter="addTodo">
     <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
-        <input type="checkbox" v-model=todo.completed>
+        <input type="checkbox" v-model="todo.completed">
         <div v-if="!todo.editing" @dblclick="editTodo(todo)" class="todo-item-label" :class="{ completed: todo.completed}">{{todo.title}}</div>
         <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
       </div>
@@ -36,7 +36,7 @@ export default {
   data (){
     return {
       newTodo: '',
-      ifForTodo: 3,
+      idForTodo: 3,
       beforeEditCache: '',
       filter: 'all',
       todos: [
@@ -48,7 +48,7 @@ export default {
         },
         {
           'id': 2,
-          'title' : 'submit report',
+          'title' : 'Submit report',
           'completed': false,
           'editing' : false,
         }
@@ -153,7 +153,8 @@ export default {
 .remove-item{
   cursor: pointer;
   margin-left: 14px ;
-}
+  }
+
 
 .todo-item-left{
   display: flex;
@@ -170,13 +171,13 @@ export default {
     font-size: 18px;
     color: #2c3e50;
     margin-left: 10px;
-    width: 30vw;
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     font-family: 'Times New Roman';
   }
 
-  :focus{
+  .todo-item-edit:focus{
     outline: none;
   }
 
