@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       newTodo: "",
-      ifForTodo: 3,
+      idForTodo: 3,
       beforeEditCache: "",
       filter: "all",
       todos: [
@@ -178,7 +178,7 @@ export default {
 .todo {
   box-sizing: border-box;
   width: 30%;
-  margin-left: 70vh;
+  margin-left: 73vh;
   margin-right: 85vh;
 }
 .todo-input {
@@ -211,19 +211,19 @@ export default {
   margin-left: 12px;
 }
 
-.todo-item-edit {
-  font-size: 18px;
-  color: #2c3e50;
-  margin-left: 10px;
-  width: 30vw;
-  padding: 10px;
-  border: 1px solid #ccc;
-  font-family: "Times New Roman";
-}
+  .todo-item-edit{
+    font-size: 18px;
+    color: #2c3e50;
+    margin-left: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-family: 'Times New Roman';
+  }
 
-:focus {
-  outline: none;
-}
+  .todo-item-edit:focus{
+    outline: none;
+  }
 
 .completed {
   text-decoration: line-through;
