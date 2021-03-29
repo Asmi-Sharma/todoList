@@ -1,31 +1,44 @@
-
-
 <template>
-  <div class="list">
-    <h1> {{ msg }}</h1>
-    <input type="text" class="list" placeholder="Task to add" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="todo in todos" :key="todo.id" class="todo-item">
+  <div class="todo">
+    <input type="text" class="todo-input" placeholder="Task to add" v-model="newTodo" @keyup.enter="addTodo">
+    <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
-        <div v-if="!todo.editing" @dblclick="editTodo(todo)" class="todo-item-label">{{todo.title}}</div>
-         <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
+        <input type="checkbox" v-model=todo.completed>
+        <div v-if="!todo.editing" @dblclick="editTodo(todo)" class="todo-item-label" :class="{ completed: todo.completed}">{{todo.title}}</div>
+        <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
+      </div>
+      <div class="remove-item" @click="removeTodo(index)">
+        &times;
+      </div>
+    </div>
+
+    <div class="extra-container">
+      <div><label><input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos">Check All</label></div>
+      <div>{{ remaining}}items left</div>
+    </div>
+
+    <div class="extra-container">
+      <div class="button-display">
+        <button :class="{ active:filter == 'all'}" @click="filter = 'all'">All</button>
+        <button :class="{ active:filter == 'active'}" @click="filter = 'active'">Active</button>
+        <button :class="{ active:filter == 'completed'}" @click="filter = 'completed'">Completed</button>
+      </div>
+
+      <div>
+        <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
-
 export default {
-  name: 'Todo',
-  props: {
-    msg: String
-  },
   data (){
     return {
       newTodo: '',
       ifForTodo: 3,
       beforeEditCache: '',
+      filter: 'all',
       todos: [
         {
           'id': 1,
@@ -40,6 +53,29 @@ export default {
           'editing' : false,
         }
       ]
+    }
+  },
+  computed: {
+    remaining() {
+      return this.todos.filter( todo=> !todo.completed).length
+    },
+    anyRemaining(){
+      return this.remaining != 0
+    },
+    todosFiltered(){
+      if(this.filter == 'all'){
+        return this.todos
+      }
+      else if(this.filter == 'active'){
+        return this.todos.filter(todo => !todo.completed)
+      }
+      else if(this.filter == 'completed'){
+        return this.todos.filter(todo => todo.completed)
+      }
+      return this.todos
+    },
+    showClearCompletedButton(){
+      return this.todos.filter(todo => todo.completed).length>0
     }
   },
   directives: {
@@ -76,24 +112,58 @@ export default {
     cancelEdit(todo){
       todo.title = this.beforeEditCache
       todo.editing = false
+    },
+     removeTodo(index){
+      this.todos.splice(index, 1)
+    }, 
+    checkAllTodos(){
+      this.todos.forEach((todo)=>todo.completed = event.target.checked)
+    },
+    clearCompleted(){
+      this.todos = this.todos.filter(todo => !todo.completed)
     }
   }
 }
 
 </script>
+
 <style scoped>
-  .list{
-    align-content: center;
+
+
+.todo{
+  box-sizing: border-box;
+  width: 30%;
+  margin-left: 70vh;
+  margin-right: 85vh;
+}
+  .todo-input{
+    width: 100%;
     padding: 10px 18px;
     font-size: 18px;
     margin-bottom: 16px;
   }
 
+.todo-item{
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remove-item{
+  cursor: pointer;
+  margin-left: 14px ;
+}
+
+.todo-item-left{
+  display: flex;
+  align-items: center;
+}
 
   .todo-item-label{
-    padding: 20px;
+    padding: 10px;
     border: 1px solid white;
-    margin-left: 100px;
+    margin-left: 12px;
   }
 
   .todo-item-edit{
@@ -108,5 +178,37 @@ export default {
 
   :focus{
     outline: none;
+  }
+
+  .completed{
+    text-decoration: line-through;
+    color: gray;
+  }
+
+  .extra-container{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    border-top: 1px solid silver;
+    padding-top: 12px;
+    margin-bottom: 12px;  
+  }
+
+  button{
+    margin-left: 10px;
+    border-radius: 15px;
+    border: 1px solid black;
+    font-size: 12px;
+    padding: 10px;
+    appearance: none;
+  }
+
+  :focus{
+    outline: none;
+  }
+
+  .active{
+    background: green;
   }
 </style>
